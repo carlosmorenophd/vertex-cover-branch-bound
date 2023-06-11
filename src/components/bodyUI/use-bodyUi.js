@@ -88,12 +88,21 @@ const useBodyUi = ({ init }) => {
 
   const handleChangeMethod = (event) => {
     setMethod(event.target.valueAsNumber);
-  }
+  };
 
   //Functionality when user click en basic button
   const handleResult = () => {
-      const vertexCoverResult = branchAndBound(data);
-      console.log(vertexCoverResult);
+    const vertexCoverResult = branchAndBound(data);
+    setResult([
+      vertexCoverResult.size,
+      vertexCoverResult.vertexCover
+        .map((item, index) => {
+          return { node: index, status: item };
+        })
+        .filter((item) => item.status === true)
+        .map(item  => item.node)
+        .join(","),
+    ]);
   };
   return {
     alert,
