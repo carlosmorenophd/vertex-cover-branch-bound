@@ -5,50 +5,55 @@ const useAlgorithm = () => {
   };
 
   const branchAndBoundImplementation = ({ graph }) => {
-    const numVertices = graph.length;
-    const path = [];
-
-    function isValidVertex(v, pos, path) {
-      //Search if the new vertex can add to path
-      if (!graph[path[pos - 1]][v]) {
-        return false;
-      }
-      //Check if the vertex had already been added to the path
-      for (let i = 0; i < pos; i++) {
-        if (path[i] === v) {
-          return false;
+    const n = graph.length; 
+    let bestVertexCover = Array(n).fill(false); 
+    let bestSize = Infinity; 
+  
+    // Validar si los vertices seleccionados tienen todas las aristas que posee el grafo.
+    function isCovered(vertices) {
+      for (let i = 0; i < n; i++) {
+        if (!vertices[i]) {
+          for (let j = 0; j < n; j++) {
+            if (graph[i][j] && !vertices[j]) {
+              return false;
+            }
+          }
         }
       }
       return true;
     }
-
-    function hamiltonianCycleUtil(path, pos) {
-      //Validate if is the last vertex and if it has a path to source vertex
-      if (pos === numVertices) {
-        if (graph[path[pos - 1]][path[0]]) {
-          return true;
+  
+    function branchAndBound(vertices, size, currentVertex) {
+      console.log(vertices, size, currentVertex);
+      if (isCovered(vertices)) {
+        if (size < bestSize) {
+          bestSize = size;
+          bestVertexCover = vertices.slice();
         }
-        return false;
+        return;
       }
-      //Search for all possible paths
-      for (let v = 1; v < numVertices; v++) {
-        if (isValidVertex(v, pos, path)) {
-          path[pos] = v;
-          if (hamiltonianCycleUtil(path, pos + 1)) {
-            return true;
-          }
-          //Backtracking if do not find a correct solution on this path
-          path[pos] = -1;
-        }
+  
+      if (currentVertex === n) {
+        return;
       }
-      //if not exist path return false
-      return false;
+  
+      // Ramificación incluyendo el vértice actual en el conjunto de vértices
+      vertices[currentVertex] = true;
+      let newSize = size + 1;
+      if (newSize < bestSize) {
+        branchAndBound(vertices, newSize, currentVertex + 1);
+      }
+  
+      // Ramificación excluyendo el vértice actual del conjunto de vértices
+      vertices[currentVertex] = false;
+      newSize = size;
+      if (newSize < bestSize) {
+        branchAndBound(vertices, newSize, currentVertex + 1);
+      }
     }
-    path[0] = 0;
-    if (!hamiltonianCycleUtil(path, 1)) {
-      return { success: false, path: [] };
-    }
-    return { success: true, path };
+  
+   branchAndBound(Array(n).fill(false), 0, 0);
+    return { vertexCover: bestVertexCover, size: bestSize };
   };
 
   return {

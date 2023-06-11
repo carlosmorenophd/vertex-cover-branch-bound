@@ -1,27 +1,55 @@
-# Ciclo Hamiltoniano. (Español)
+# Covertura de vertices. (Español)
 
 ## Introducción
 
-Un ciclo hamiltoniano es un recorrido en un grafo que visita cada vértice exactamente una vez, regresando al vértice inicial. Es decir, es un ciclo que pasa por todos los vértices del grafo sin repetir ninguno.
+El problema del Vertex Cover (Cobertura de Vértices) es un problema fundamental en la teoría de grafos. Dado un grafo no dirigido, un Vertex Cover es un conjunto de vértices tal que cada arista del grafo incide en al menos uno de los vértices del conjunto. En otras palabras, el Vertex Cover representa un conjunto de vértices que "cubren" todas las aristas del grafo.
+
+El objetivo del problema de Vertex Cover es encontrar el Vertex Cover mínimo, es decir, el conjunto de vértices más pequeño posible que cubre todas las aristas del grafo. En términos de optimización, buscamos minimizar el tamaño del Vertex Cover.
+
+El problema de Vertex Cover se considera un problema de optimización conocido como NP-completo, lo que significa que no se conoce un algoritmo eficiente que pueda encontrar la solución óptima en tiempo polinómico para todos los grafos posibles. Esto implica que no hay una solución general que funcione de manera eficiente para todos los casos.
 
 
-## Cómo saber si una gráfica puede tener un ciclo Hamiltoniano?
+## Ramificacion y acotamiento
+El algoritmo de ramificación y acotamiento (Branch and Bound) se puede utilizar para resolver el problema del Vertex Cover de manera exacta. Aquí tienes una descripción del algoritmo utilizando este enfoque:
 
-Condiciones necesarias:
-a. El grafo debe ser no dirigido, es decir, no debe haber una dirección específica en las aristas.
-b. El grafo debe ser conexo, lo que significa que hay una ruta entre cualquier par de vértices.
+1. Inicialización:
 
+- Inicializa el conjunto de vértices actual como vacío.
+- Establece la cota superior (upper bound) inicial como el número total de vértices en el grafo.
+- Inicializa la cota inferior (lower bound) inicial en 0.
+- 
+2. Ramificación:
 
-Condiciones suficientes:
-a. En un grafo con $n$ vértices, donde $n$ es mayor o igual a 3, si el grado de cada vértice es al menos $n/2$ (es decir, cada vértice está conectado a al menos la mitad de los demás vértices), entonces se puede afirmar que existe un ciclo Hamiltoniano. Esto se conoce como el Teorema de Dirac.
-b. En un grafo con n vértices, donde n es mayor o igual a 3, si para cada par de vértices no adyacentes (es decir, no conectados por una arista), la suma de sus grados es mayor o igual a n, entonces se puede afirmar que existe un ciclo Hamiltoniano. Esto se conoce como el Teorema de Ore.
+- Selecciona un vértice no visitado en el grafo.
+- Realiza dos ramificaciones:
+    - Incluye el vértice seleccionado en el conjunto de vértices actual y actualiza el grafo reduciendo los vértices adyacentes.
+    - Excluye el vértice seleccionado del conjunto de vértices actual y actualiza el grafo eliminando el vértice seleccionado y sus aristas.
+    - Repite el paso de ramificación para cada una de las ramificaciones creadas.
+3.Acotamiento:
 
-Cabe destacar que estas condiciones son necesarias o suficientes, lo que significa que pueden haber grafos que no cumplan estas condiciones y aún así tengan o no tengan un ciclo Hamiltoniano. Además, determinar la existencia de un ciclo Hamiltoniano en un grafo general es un problema NP-completo, por lo que no existe un algoritmo eficiente conocido para resolverlo en todos los casos.
+- Para cada ramificación creada:
+- Verifica si el conjunto de vértices actual cubre todas las aristas del grafo.
+    - Si es así, actualiza la cota superior con el tamaño del conjunto de vértices actual.
+    - Si no, calcula una cota inferior para la ramificación actual.
+    - Si la cota inferior para todas las ramificaciones es mayor que la cota superior, termina la búsqueda para esta rama.
+    - Si la cota inferior para alguna ramificación es igual a la cota superior, se ha encontrado una solución óptima. Termina la búsqueda.
+4. Selección de la siguiente ramificación:
+
+- Selecciona la siguiente ramificación basada en una heurística.
+- Por ejemplo, puedes seleccionar la ramificación con el mayor grado de vértices no visitados.
+- Repite los pasos de ramificación y acotamiento para la ramificación seleccionada.
+5. Terminación:
+
+-   Repite los pasos anteriores hasta que todas las ramas se hayan explorado completamente.
+6. Resultado:
+
+- El resultado óptimo será el conjunto de vértices con el tamaño de la cota superior final.
+Este algoritmo de ramificación y acotamiento explora todas las posibles combinaciones de vértices, descartando ramas que no pueden conducir a una solución óptima. Al ir actualizando las cotas superiores e inferiores, el algoritmo reduce la cantidad de ramas que se deben explorar.
 
 
 ## Ejecución
 
-![Multistage](asserts/hamiltoniano.png)
+![Multistage](asserts/)
 
 
 ## Acerca del autor 
@@ -31,25 +59,53 @@ Estuandite de Doctorado: Juan Carlos Moreno Sanchez
 
 <jcmorenos001@alumno.uaemex.mx>
 
-# Program to calculate the shortest path and the minimum cost of traveler problem (TSP) using dynamic programming and branch and bound. (English)
+# Vertex Cover. (English)
 
 ## Introduction
 
-A Hamiltonian cycle is a traversal in a graph that visits each vertex exactly once, returning to the starting vertex. That is, it is a cycle that passes through all the vertices of the graph without repeating any.
+The Vertex Cover problem is a fundamental problem in graph theory. Given an undirected graph, a vertex cover is a set of vertices such that each edge of the graph affects at least one of the vertices of the set. In other words, the Vertex Cover represents a set of vertices that "cover" all the edges of the graph.
 
-## How to know if a graph can have a Hamiltonian cycle
+The objective of the Vertex Cover problem is to find the minimum Vertex Cover, that is, the smallest possible set of vertices that covers all the edges of the graph. In terms of optimization, we seek to minimize the size of the Vertex Cover.
 
-Necessary conditions:
-a. The graph must be undirected, that is, there must not be a specific direction on the edges.
-b. The graph must be connected, which means that there is a path between any pair of vertices.
+The Vertex Cover problem is considered an optimization problem known as NP-complete, which means that there is no known efficient algorithm that can find the optimal solution in polynomial time for all possible graphs. This implies that there is no general solution that works efficiently for all cases.
 
+## Branch and bound
 
-Sufficient conditions:
-a. In a graph with $n$ vertices, where $n$ is greater than or equal to 3, if the degree of each vertex is at least $n/2$ (that is, each vertex is connected to at least half of the other vertices), then it can be affirmed that there is a Hamiltonian cycle. This is known as Dirac's Theorem.
-b. In a graph with n vertices, where n is greater than or equal to 3, if for each pair of non-adjacent vertices (that is, not connected by an edge), the sum of their degrees is greater than or equal to n, then it can be stated that there is a Hamiltonian cycle. This is known as Ore's Theorem.
+The Branch and Bound algorithm can be used to solve the Vertex Cover problem exactly. Here is a description of the algorithm using this approach:
 
-It should be noted that these conditions are either necessary or sufficient, which means that there may be graphs that do not meet these conditions and still have or do not have a Hamiltonian cycle. Furthermore, determining the existence of a Hamiltonian cycle in a general graph is an NP-complete problem, so there is no known efficient algorithm to solve it in all cases.
+1. Initialization:
 
+- Initializes the current vertex set as empty.
+- Sets the initial upper bound as the total number of vertices in the graph.
+- Initializes the initial lower bound to 0.
+-
+2. Branching:
+
+- Select an unvisited vertex in the graph.
+- Make two branches:
+     - Includes the selected vertex in the current set of vertices and updates the graph by reducing the adjacent vertices.
+     - Excludes the selected vertex from the current vertex set and updates the graph by removing the selected vertex and its edges.
+     - Repeat the branching step for each of the created branches.
+3. Delimitation:
+
+- For each branch created:
+- Checks if the current set of vertices covers all the edges of the graph.
+     - If so, update the upper bound with the size of the current set of vertices.
+     - If not, calculates a lower bound for the current branch.
+     - If the lower bound for all branches is greater than the upper bound, the search for this branch ends.
+     - If the lower bound for any branch is equal to the upper bound, an optimal solution has been found. Finish the search.
+4. Selection of the following branch:
+
+- Select the next branch based on a heuristic.
+- For example, you can select the branch with the highest degree of unvisited vertices.
+- Repeats the branch and bound steps for the selected branch.
+5. Termination:
+
+- Repeat the above steps until all branches have been fully explored.
+6. Result:
+
+- The optimal result will be the set of vertices with the size of the final upper bound.
+This branch and bound algorithm explores all possible combinations of vertices, discarding branches that cannot lead to an optimal solution. By updating the upper and lower bounds, the algorithm reduces the number of branches that must be explored.
 
 ## Ejecución
 
