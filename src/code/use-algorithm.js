@@ -1,10 +1,10 @@
 const useAlgorithm = () => {
-  const hamiltonianCycle = (graph) => {
-    const result = hamiltonianCycleImplementation({ graph });
+  const branchAndBound = (graph) => {
+    const result = branchAndBoundImplementation({ graph });
     return result;
   };
 
-  const hamiltonianCycleImplementation = ({ graph }) => {
+  const branchAndBoundImplementation = ({ graph }) => {
     const numVertices = graph.length;
     const path = [];
 
@@ -52,7 +52,7 @@ const useAlgorithm = () => {
   };
 
   return {
-    hamiltonianCycle,
+    branchAndBound,
   };
 };
 

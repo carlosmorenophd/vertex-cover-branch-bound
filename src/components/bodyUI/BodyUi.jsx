@@ -1,19 +1,22 @@
 import { Alert, Box, Button, Snackbar, Typography } from "@mui/material";
 import RouteIcon from "@mui/icons-material/Route";
-import MatrixData from "./MatrixData";
+import MatrixData from "../MatrixData";
 import React from "react";
 import useBodyUi from "./use-bodyUi";
-import { ListResult } from "./ListResult";
+import { ListResult } from "../ListResult";
+import ParameterList from "../ParameterList";
 
 const BodyUi = (props) => {
   const {
     alert,
     data,
     result,
+    method,
 
     handleAlertClose,
     handleChangeMatrixValue,
     handleMatrixAdd,
+    handleChangeMethod,
     handleMatrixRemove,
     handleResult,
   } = useBodyUi({
@@ -26,6 +29,7 @@ const BodyUi = (props) => {
         [0, 1, 1, 1, 0],
       ],
       result: [],
+      method: 1,
     },
   });
 
@@ -44,6 +48,15 @@ const BodyUi = (props) => {
         />
       </Box>
       <Box sx={{ mt: 2 }}>
+        <ParameterList
+          id="method"
+          label="Vertex Cover Method"
+          list={[{ value: 1, text: "Branch and bound" }]}
+          value={method}
+          onChange={handleChangeMethod}
+        />
+      </Box>
+      <Box sx={{ mt: 2 }}>
         <Button
           fullWidth
           color="primary"
@@ -51,11 +64,15 @@ const BodyUi = (props) => {
           endIcon={<RouteIcon />}
           onClick={handleResult}
         >
-          Get minimal path
+          Get minimal vertex cover
         </Button>
       </Box>
       <Box sx={{ mt: 2 }}>
-        <ListResult data={result} title={`Hamiltonian cycle`} columns={["result", "path"]} />
+        <ListResult
+          data={result}
+          title={`Vertex cover`}
+          columns={["result", "path"]}
+        />
       </Box>
       <Snackbar open={alert} autoHideDuration={6000} onClose={handleAlertClose}>
         <Alert

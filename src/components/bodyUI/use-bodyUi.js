@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useAlgorithm } from "../code/use-algorithm";
+import { useAlgorithm } from "../../code/use-algorithm";
 
 const useBodyUi = ({ init }) => {
-  const { hamiltonianCycle } = useAlgorithm();
+  const { branchAndBound } = useAlgorithm();
   const [data, setData] = useState(init.data);
   const [alert, setAlert] = useState(false);
   const [result, setResult] = useState(init.result);
+  const [method, setMethod] = useState(init.method);
   const [tree, setTree] = useState({
     name: "Tree expansion",
     attributes: {
@@ -85,21 +86,26 @@ const useBodyUi = ({ init }) => {
     });
   };
 
+  const handleChangeMethod = (event) => {
+    setMethod(event.target.valueAsNumber);
+  }
+
   //Functionality when user click en basic button
   const handleResult = () => {
-      const hamiltonianCycleResult = hamiltonianCycle(data);
-      const message = hamiltonianCycleResult.success ? "Path found" : "Path not found";
-      setResult([message, hamiltonianCycleResult.path.join('->')])
+      const vertexCoverResult = branchAndBound(data);
+      console.log(vertexCoverResult);
   };
   return {
     alert,
     data,
+    method,
     result,
     tree,
 
     handleAlertClose,
     handleChangeListValue,
     handleChangeMatrixValue,
+    handleChangeMethod,
     handleListAdd,
     handleListRemove,
     handleMatrixAdd,
