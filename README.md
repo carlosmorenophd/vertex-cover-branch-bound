@@ -49,7 +49,7 @@ Este algoritmo de ramificación y acotamiento explora todas las posibles combina
 
 ## Ejecución
 
-![Multistage](asserts/)
+![Multistage](asserts/branchAndBound.png)
 
 
 ## Acerca del autor 
@@ -109,7 +109,7 @@ This branch and bound algorithm explores all possible combinations of vertices, 
 
 ## Ejecución
 
-![Multistage](asserts/hamiltoniano.png)
+![Multistage](asserts/branchAndBound.png)
 
 ## About the author
 Student of PhD: Juan Carlos Moreno Sanchez

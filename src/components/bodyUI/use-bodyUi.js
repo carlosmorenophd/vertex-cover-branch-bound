@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAlgorithm } from "../../code/use-algorithm";
 
 const useBodyUi = ({ init }) => {
-  const { branchAndBound } = useAlgorithm();
+  const { branchAndBound, getTree } = useAlgorithm();
   const [data, setData] = useState(init.data);
   const [alert, setAlert] = useState(false);
   const [result, setResult] = useState(init.result);
@@ -88,12 +88,22 @@ const useBodyUi = ({ init }) => {
 
   const handleChangeMethod = (event) => {
     setMethod(event.target.valueAsNumber);
-  }
+  };
 
   //Functionality when user click en basic button
   const handleResult = () => {
-      const vertexCoverResult = branchAndBound(data);
-      console.log(vertexCoverResult);
+    const vertexCoverResult = branchAndBound(data);
+    setResult([
+      vertexCoverResult.size,
+      vertexCoverResult.vertexCover
+        .map((item, index) => {
+          return { node: index, status: item };
+        })
+        .filter((item) => item.status === true)
+        .map(item  => item.node)
+        .join(","),
+    ]);
+    setTree(getTree());
   };
   return {
     alert,

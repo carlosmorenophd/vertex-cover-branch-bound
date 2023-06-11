@@ -5,6 +5,7 @@ import React from "react";
 import useBodyUi from "./use-bodyUi";
 import { ListResult } from "../ListResult";
 import ParameterList from "../ParameterList";
+import Tree from "react-d3-tree";
 
 const BodyUi = (props) => {
   const {
@@ -12,6 +13,7 @@ const BodyUi = (props) => {
     data,
     result,
     method,
+    tree,
 
     handleAlertClose,
     handleChangeMatrixValue,
@@ -71,6 +73,13 @@ const BodyUi = (props) => {
           data={result}
           title={`Vertex cover`}
           columns={["result", "path"]}
+        />
+      </Box>
+      <Box sx={{ height: "100%" }} minHeight="100%">
+        <Tree
+          data={tree}
+          orientation="vertical"
+          nodeSize={{ x: 250, y: 100 }}
         />
       </Box>
       <Snackbar open={alert} autoHideDuration={6000} onClose={handleAlertClose}>
