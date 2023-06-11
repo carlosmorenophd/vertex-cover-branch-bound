@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAlgorithm } from "../../code/use-algorithm";
 
 const useBodyUi = ({ init }) => {
-  const { branchAndBound } = useAlgorithm();
+  const { branchAndBound, getTree } = useAlgorithm();
   const [data, setData] = useState(init.data);
   const [alert, setAlert] = useState(false);
   const [result, setResult] = useState(init.result);
@@ -103,6 +103,7 @@ const useBodyUi = ({ init }) => {
         .map(item  => item.node)
         .join(","),
     ]);
+    setTree(getTree());
   };
   return {
     alert,
